@@ -40,7 +40,11 @@
   box-shadow: 0 4px 24px #0f08, 0 0 0 4px #0f08;
   background: #000;
 " />
+<!-- Minimal UFO Abduction Game: NO UI, just canvas -->
 <canvas id="gameCanvas" width="320" height="480" style="display:block; margin:40px auto; background:#23273a; border-radius:18px;"></canvas>
+<div style="text-align:center; color:#0ff; font-family:monospace; font-size:1.1em; margin-top:8px; letter-spacing:0.12em;">
+  Created by <b>UFOGER</b>
+</div>
 <script>
 // Game variables
 let canvas = document.getElementById("gameCanvas");
@@ -199,9 +203,46 @@ function gameLoop() {
 
 // Start game
 init();
+
+// Power-up types
+const powerUpTypes = [
+  { type: 'time', icon: '⏰', effect: () => { timeLeft = Math.min(timeLeft + 7, 30); } },
+  { type: 'score', icon: '⭐', effect: () => { score += 3; updateHighScore(); floatingTexts.push({ x: ufo.x, y: ufo.y, text: '+3', alpha: 1, t: 0 }); } },
+  { type: 'shield', icon: '🛡️', effect: () => { ufo.shield = 1; } }
+];
+let powerUps = [];
+let lastPowerUpTime = 0;
+
+function spawnPowerUp() {
+  if (powerUps.length > 0) return;
+  const t = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+  powerUps.push({
+    x: 40 + Math.random() * 240,
+    y: 120 + Math.random() * 260,
+    r: 16,
+    type: t.type,
+    icon: t.icon,
+    effect: t.effect,
+    active: true
+  });
+  lastPowerUpTime = Date.now();
+}
+
+function movePowerUps() {
+  // Power-ups can float or bounce if desired
+}
+
+function checkPowerUpCollision() {
+  for (let i = 0; i < powerUps.length; i++) {
+    const p = powerUps[i];
+    if (p.active && Math.hypot(ufo.x - p.x, ufo.y - p.y) < ufo.r + p.r) {
+      p.effect();
+      p.active = false;
+      floatingTexts.push({ x: p.x, y: p.y, text: p.icon, alpha: 1, t: 0 });
+      setTimeout(() => { powerUps.splice(i, 1); }, 100);
+    }
+  }
+}
 </script>
-<div style="text-align:center; color:#0ff; font-family:monospace; font-size:1.1em; margin-top:8px; letter-spacing:0.12em;">
-  Created by <b>UFOGER</b>
-</div>
 </body>
 </html>
