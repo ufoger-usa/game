@@ -31,7 +31,7 @@
 </head>
 <body>
 <!-- UFOGER Branding Logo -->
-<img id="ufogerLogo" src="g:/UFOGER.com/LOGO/b7809e55-6565-49d2-9a63-480947216a3a.png" alt="UFOGER Logo" style="
+<img id="ufogerLogo" src="logo.png" alt="UFOGER Logo" style="
   display: block;
   margin: 24px auto 0 auto;
   width: 90px;
@@ -52,6 +52,12 @@ let ctx = canvas.getContext("2d");
 let abductor, cow, beam;
 let score = 0;
 let isGameOver = false;
+let timerId;
+// === GAME STATE VARIABLES (ensure all are initialized) ===
+let timeLeft = 30;
+let level = 1;
+let burgersToNextLevel = 10;
+let gameWon = false;
 
 // Load images
 function preload() {
@@ -127,6 +133,10 @@ function init() {
   beam = new Beam();
   score = 0;
   isGameOver = false;
+  timeLeft = 30;
+  level = 1;
+  burgersToNextLevel = 10;
+  gameWon = false;
   gameLoop();
 }
 
