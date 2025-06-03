@@ -58,6 +58,9 @@ let timeLeft = 30;
 let level = 1;
 let burgersToNextLevel = 10;
 let gameWon = false;
+let shootingStars = [];
+let particles = [];
+let floatingTexts = [];
 
 // Load images
 function preload() {
@@ -185,6 +188,12 @@ document.addEventListener("keydown", (e) => {
     beam.activate(abductor.x + abductor.width / 2, abductor.y);
   }
 });
+
+// === DUMMY FUNCTIONS TO PREVENT ERRORS ===
+function moveParticles() {}
+function moveShootingStars() {}
+function showReloadBtn() {}
+function hideRestartBtn() {}
 
 // Main game loop
 function gameLoop() {
